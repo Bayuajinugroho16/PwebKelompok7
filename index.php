@@ -40,13 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="form-boxLog">
       <h2>Login KAI Mini</h2>
       <?php if ($error) echo "<p style='color:red;'>$error</p>"; ?>
-      <form method="POST" action="">
-        <label>Username</label>
-        <input type="text" name="username" required>
-        <label>Password</label>
-        <input type="password" name="password" required>
-        <button type="submit" class="btn">Login</button>
-      </form>
+      <form method="post" autocomplete="off">
+      <label>Username</label>
+      <input type="text" name="username" autocomplete="new-username">
+
+      <label>Password</label>
+      <input type="password" name="password" autocomplete="new-password">
+
+      <button type="submit">Login</button>
+    </form>
       <p style="margin-top:10px;">
         Belum punya akun? <a href="register.php">Register</a>
       </p>
