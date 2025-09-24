@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['username'])) {
-  header("Location: home.php"); // kalau sudah login, langsung ke home
+  header("Location: home.php"); 
   exit;
 }
 include "koneksi.php";
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (mysqli_num_rows($result) == 1) {
     $row = mysqli_fetch_assoc($result);
-    if ($row['password'] === md5($password)) {
+    if ($row['password'] === ($password)) {
       $_SESSION['username'] = $username;
       header("Location: home.php");
       exit;
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
   <div class="container">
-    <div class="form-box">
+    <div class="form-boxLog">
       <h2>Login KAI Mini</h2>
       <?php if ($error) echo "<p style='color:red;'>$error</p>"; ?>
       <form method="POST" action="">

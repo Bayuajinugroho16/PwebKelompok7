@@ -6,11 +6,11 @@ if (!isset($_SESSION['username'])) {
 }
 include "koneksi.php";
 
-// Pastikan parameter ada
+
 if (isset($_GET['kode_booking'])) {
   $kode_booking = $_GET['kode_booking'];
 
-  // Gunakan prepared statement
+
   $stmt = mysqli_prepare($conn, "SELECT * FROM pesanan WHERE kode_booking = ? LIMIT 1");
   mysqli_stmt_bind_param($stmt, "s", $kode_booking);
   mysqli_stmt_execute($stmt);
@@ -45,7 +45,7 @@ if (isset($_GET['kode_booking'])) {
   </div>
 
   <div class="container">
-    <div class="form-box" style="max-width:500px; text-align:center;">
+    <div class="form-boxD" style="max-width:500px; text-align:center;">
       <h2>Detail Pesanan</h2>
       <p><b>Kode Booking:</b> <?= htmlspecialchars($pesanan['kode_booking']); ?></p>
       <p><b>Asal:</b> <?= htmlspecialchars($pesanan['asal']); ?></p>

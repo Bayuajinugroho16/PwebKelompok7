@@ -23,54 +23,43 @@ if (!isset($_SESSION['username'])) {
   </div>
 
   <div class="container">
-    <div class="form-box">
-      <h2>Pemesanan Tiket</h2>
+    <div class="form-boxPesan">
+      <h2>Form Pemesanan Tiket</h2>
       <form action="proses.php" method="POST" onsubmit="return cekForm()">
-        <label>Stasiun Asal</label>
-        <select name="asal" id="asal" required onchange="hitungHarga()">
-          <option value="">-- Pilih --</option>
-          <option>Surabaya</option>
-          <option>Kalibaru</option>
-          <option>Ketapang</option>
-          <option>Rogojampi</option>
-          <option>Setail</option>
-          <option>Jember</option>
-          <option>Rambipuji</option>
-          <option>Jatiroto</option>
-          <option>Klakah</option>
-          <option>Gubeng</option>
-          <option>Yogyakarta</option>
-          <option>Jakarta</option>
+        
+        <label for="asal">Stasiun Asal:</label>
+        <select id="asal" name="asal" onchange="hitungHarga()" required>
+          <option value="">-- Pilih Asal --</option>
+          <option value="Surabaya">Surabaya</option>
+          <option value="Jember">Jember</option>
+          <option value="Yogyakarta">Yogyakarta</option>
+          <option value="Jakarta">Jakarta</option>
+          <option value="Kalibaru">Kalibaru</option>
+          <option value="Ketapang">Ketapang</option>
         </select>
 
-        <label>Stasiun Tujuan</label>
-        <select name="tujuan" id="tujuan" required onchange="hitungHarga()">
-          <option value="">-- Pilih --</option>
-          <option>Surabaya</option>
-          <option>Kalibaru</option>
-          <option>Ketapang</option>
-          <option>Rogojampi</option>
-          <option>Setail</option>
-          <option>Jember</option>
-          <option>Rambipuji</option>
-          <option>Jatiroto</option>
-          <option>Klakah</option>
-          <option>Gubeng</option>
-          <option>Yogyakarta</option>
-          <option>Jakarta</option>
+        <label for="tujuan">Stasiun Tujuan:</label>
+        <select id="tujuan" name="tujuan" onchange="hitungHarga()" required>
+          <option value="">-- Pilih Tujuan --</option>
+          <option value="Surabaya">Surabaya</option>
+          <option value="Jember">Jember</option>
+          <option value="Yogyakarta">Yogyakarta</option>
+          <option value="Jakarta">Jakarta</option>
+          <option value="Kalibaru">Kalibaru</option>
+          <option value="Ketapang">Ketapang</option>
         </select>
 
-        <label>Tanggal Berangkat</label>
-        <input type="date" name="tanggal" id="tanggal" required>
+        <label for="penumpang">Jumlah Penumpang:</label>
+        <input type="number" id="penumpang" name="penumpang" value="1" min="1" onchange="hitungHarga()" required>
 
-        <label>Jumlah Penumpang</label>
-        <input type="number" name="penumpang" min="1" value="1" oninput="hitungHarga()">
+        <label for="tanggal">Tanggal Berangkat:</label>
+        <input type="date" id="tanggal" name="tanggal" required>
 
-        <label>Estimasi Harga</label>
-        <input type="text" name="harga" id="harga" readonly>
-        <input type="hidden" name="harga_numeric" id="harga_numeric">
+        <label for="harga">Total Harga:</label>
+        <input type="text" id="harga" readonly>
+        <input type="hidden" id="harga_numeric" name="harga_numeric">
 
-        <button type="submit" class="btn">Pesan & Cari Kereta</button>
+        <button type="submit">Pesan Tiket</button>
       </form>
     </div>
   </div>

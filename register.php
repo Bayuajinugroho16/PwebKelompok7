@@ -12,10 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($password !== $confirm) {
     $message = "❌ Password dan konfirmasi tidak sama!";
   } else {
-    // hash password
-    $hashed = md5($password);
 
-    // cek apakah username sudah ada
+    $hashed = ($password);
+
     $check = mysqli_query($conn, "SELECT * FROM users WHERE username='$username' LIMIT 1");
     if (mysqli_num_rows($check) > 0) {
       $message = "⚠️ Username sudah dipakai!";
@@ -39,9 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
   <div class="container">
-    <div class="form-box" style="max-width:350px; text-align:center;">
+    <div class="form-boxReg" >
       <h2>Register Akun</h2>
-      <?php if ($message) echo "<p style='color:red;'>$message</p>"; ?>
+      <?php if ($message) echo "<p style='color:green;'>$message</p>"; ?>
       <form method="POST" action="">
         <label>Username</label>
         <input type="text" name="username" required>

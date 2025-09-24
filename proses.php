@@ -1,55 +1,77 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
-  exit;
-}
 include "koneksi.php";
 
 
-$asal = $_POST['asal'];
-$tujuan = $_POST['tujuan'];
-$tanggal = $_POST['tanggal'];
-$penumpang = $_POST['penumpang'];
-$harga = $_POST['harga_numeric'];
-
-$kode_booking = strtoupper(substr($asal,0,2).substr($tujuan,0,2)).rand(1000,9999);
+$asal       = $_POST['asal']       ?? '';
+$tujuan     = $_POST['tujuan']     ?? '';
+$tanggal    = $_POST['tanggal']    ?? '';
+$penumpang  = $_POST['penumpang']  ?? '';
+$harga      = $_POST['harga_numeric'] ?? '';
 
 
-$query = "INSERT INTO pesanan (kode_booking, asal, tujuan, tanggal, penumpang, harga) 
-          VALUES ('$kode_booking', '$asal', '$tujuan', '$tanggal', '$penumpang', '$harga')";
-mysqli_query($conn, $query);
+if ($asal === '' || $tujuan === '' || $tanggal === '' || $penumpang === '' || $harga === '') {
+    echo "<script>
+        alert('Semua field wajib diisi!');
+        window.location.href='index.php';
+    </script>";
+    exit;
+}
+
+
+if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $tanggal)) {
+    echo "<script>
+        alert('Format tanggal tidak valid!');
+        window.location.href='index.php';
+    </script>";
+    exit;
+}
+
+
+$kode_booking = strtoupper(substr($asal,0,2) . substr($tujuan,0,2)) . rand(1000,9999);
+
+
+$stmt = $conn->prepare("INSERT INTO pesanan (kode_booking, asal, tujuan, tanggal, penumpang, harga) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssssii", $kode_booking, $asal, $tujuan, $tanggal, $penumpang, $harga);
+$success = $stmt->execute();
 ?>
-
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Pesanan Berhasil</title>
-  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-  <div class="navbar">
-    <div><b>KAI Mini</b></div>
-    <div class="nav-links">
-      <a href="index.php">Beranda</a>
-      <a href="pesanan.php">Pesanan</a>
-      <a href="logout.php">Logout</a>
-    </div>
+  <div class = "DetailP">
+<?php if ($success): ?>
+  <script>
+    Swal.fire({
+      icon: "success",
+      title: "Pesanan Berhasil!",
+      
+      html: `
+        <b>Kode Booking:</b> <?= $kode_booking; ?><br>
+        <b>Asal:</b> <?= htmlspecialchars($asal); ?><br>
+        <b>Tujuan:</b> <?= htmlspecialchars($tujuan); ?><br>
+        <b>Tanggal:</b> <?= htmlspecialchars($tanggal); ?><br>
+        <b>Penumpang:</b> <?= htmlspecialchars($penumpang); ?><br>
+        <b>Total Harga:</b> Rp <?= number_format($harga,0,',','.'); ?>
+      `,
+      confirmButtonText: "Lihat Pesanan"
+    }).then(() => {
+      window.location.href = "pesanan.php";
+    });
+  </script>
+<?php else: ?>
   </div>
-
-  <div class="container">
-    <div class="form-box" style="max-width:500px; text-align:center;">
-      <h2>Pesanan Berhasil!</h2>
-      <p><b>Kode Booking:</b> <?php echo $kode_booking; ?></p>
-      <p><b>Asal:</b> <?php echo $asal; ?></p>
-      <p><b>Tujuan:</b> <?php echo $tujuan; ?></p>
-      <p><b>Tanggal:</b> <?php echo $tanggal; ?></p>
-      <p><b>Penumpang:</b> <?php echo $penumpang; ?></p>
-      <p><b>Total Harga:</b> Rp <?php echo number_format($harga,0,',','.'); ?></p>
-
-      <a href="pesanan.php" class="btn">Lihat Daftar Pesanan</a>
-    </div>
-  </div>
+  <script>
+    Swal.fire({
+      icon: "error",
+      title: "Gagal!",
+      text: "Pesanan tidak bisa diproses"
+    }).then(() => {
+      window.location.href = "index.php";
+    });
+  </script>
+<?php endif; ?>
 </body>
 </html>
